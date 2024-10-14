@@ -19,8 +19,8 @@ function commoncodeNA($PageOpen){
                     } ?>>Contact</a>
                 </div>
                 <div class="Icon">
-                    <img src="./img/download.jpg">
-                    <a href="Home."></a>
+                <img src="../img/download.jpg">
+                <a href="Home."></a>
                 </div>
                 <a href="#" id="basketIcon"> 🛒 <span id="basketCount"></span>
             </div>
