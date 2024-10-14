@@ -1,58 +1,55 @@
-
-.NavAll{
-    display: flex;
+.NavAll {
     justify-content: center;
+    display: flex;
 }
 
-.TopNav{
-    background-color: #a8e3e5; 
-    padding: 10px 0; 
-    text-align: center;
+.TopNav {
+    width: 90%;
+    height: 40px;
+    background-color: #a8e3e5;
     display: flex;
-    justify-content: center;
-    gap: 20px; /* Adds space between the menu items */
-    flex-wrap: wrap;
+    justify-content: space-between;
     border-radius: 20px;
-    }
+}
 
-.MainLinks{
+.MainLinks {
     height: 40px;
     display: flex;
     align-items: center;
-    color: black;
+    gap: 20px;
 }
 
-.TopNav a{
-    color: #e84d88; 
+.TopNav a {
+    color: #e84d88;
     text-transform: uppercase;
-    padding: 10px 15px; 
+    padding: 10px 15px;
     text-decoration: none;
     transition: all 0.3s ease;
     border-radius: 20px;
 }
 
-.active{
+.active {
     background-color: #d9a6b7;
 }
 
-.Icon{
-height: 50px;
-display: flex;
-align-items: center;
+.Icon {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
 }
 
-.Icon img{
-    height: 50px;
-    margin-right: 20px;
+.Icon img {
+    height: 40px;
+
 }
 
 .TopNav a:hover {
-    background-color: rgba(255, 255, 255, 0.5); 
-    color: #ff9ec6; 
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #ff9ec6;
 }
 
 #basketIcon {
-  height: 50px;
-  margin-right: 20px;
-  display: flex;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
