@@ -14,6 +14,8 @@
     include_once("CommonCode.php");
     commoncodeNA("Home");
     ?>
+    
+    </section>
 
 </body>
 

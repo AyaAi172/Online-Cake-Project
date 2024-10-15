@@ -11,10 +11,8 @@
 <body>
   <?php
   include_once("CommonCodeAR.php");
-  commoncodeNA("Contact")
+  commoncodeNA("HomeAR")
   ?>
-    
-
 </body>
 
 </html>

@@ -9,9 +9,9 @@ function commoncodeNA($PageOpen)
                 <a href="Home.php" <?php if ($PageOpen == "Home") {
                                         print("class='active'");
                                     } ?>>Home</a>
-                <a href="About .php" <?php if ($PageOpen == "About") {
-                                            print("class='active'");
-                                        } ?>>About</a>
+                <a href="About.php" <?php if ($PageOpen == "About") {
+                                        print("class='active'");
+                                    } ?>>About</a>
                 <a href="Products.php" <?php if ($PageOpen == "Products") {
                                             print("class='active'");
                                         } ?>>Products</a>
@@ -22,7 +22,7 @@ function commoncodeNA($PageOpen)
             <div class="Icon">
                 <img src="../img/download.jpg">
                 <a href="#" id="basketIcon"> 🛒
-                <a href="../ProjecrAR/HomeAR.php">Arabic</a>
+                    <a href="../ProjecrAR/HomeAR.php">Arabic</a>
             </div>
 
         </div>
