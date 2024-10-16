@@ -18,14 +18,15 @@ function commoncodeNA($PageOpen)
                 <a href="ContactAR.php" <?php if ($PageOpen == "ContactAR") {
                                             print("class='active'");
                                         } ?>>التواصل</a>
-                <div class="Icon">
-                    <img src="../img/download.jpg">
-                    <a href="#" id="basketIcon"> 🛒 
+            </div>
+            <div class="Icon">
+                <img src="../img/download.jpg">
+                <a href="#" id="basketIcon"> 🛒
                     <a href="../ProjectEN/Home.php">English</a>
 
-                </div>
-                
             </div>
+
+
         </div>
 
     <?php

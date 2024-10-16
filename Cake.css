@@ -15,7 +15,7 @@ body {
     height: 40px;
     background-color: #a8e3e5;
     display: flex;
-    justify-content: space-between;
+    
     border-radius: 20px;
 }
 
@@ -42,7 +42,6 @@ body {
 .Icon {
     display: flex;
     align-items: center;
-    margin-left: auto;
 }
 
 .Icon img {
@@ -52,8 +51,7 @@ body {
 
 .TopNav a:hover {
     background-color: rgba(255, 255, 255, 0.5);
-    color: #ff9ec6;
-}
+   }
 
 #basketIcon {
     display: flex;
