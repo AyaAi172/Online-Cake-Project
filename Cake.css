@@ -15,6 +15,7 @@ body {
     height: 40px;
     background-color: #a8e3e5;
     display: flex;
+    justify-content: space-between;
     
     border-radius: 20px;
 }
@@ -42,6 +43,7 @@ body {
 .Icon {
     display: flex;
     align-items: center;
+
 }
 
 .Icon img {
@@ -51,10 +53,28 @@ body {
 
 .TopNav a:hover {
     background-color: rgba(255, 255, 255, 0.5);
-   }
+}
 
 #basketIcon {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* product page */
+
+.AllProducts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.OneProduct {
+    width: 300px;
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
