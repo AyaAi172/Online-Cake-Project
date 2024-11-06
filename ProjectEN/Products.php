@@ -22,7 +22,7 @@
             while (!feof($myFile)) {
                 $line = fgets($myFile);
                 $arrayOfPiesces = explode(";", $line);
-                if (count($arrayOfPiesces) == 5 ) {
+                if (count($arrayOfPiesces) == 6 ) {
             ?>
 
                     <div class="OneProduct">

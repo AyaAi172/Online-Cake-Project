@@ -1,9 +1,6 @@
 body {
     margin: 0;
-    background-image: url(./img/Screenshot\ 2024-10-16\ 190204.png);
-    background-size: cover;
-    background: no-repeat;
-    background-attachment: fixed;
+   
 }
 .NavAll {
     justify-content: center;
@@ -101,4 +98,10 @@ body {
     color: #e84d88;
     font-size: 20px;
     font-family:cursive ;
+}
+
+.Carrot cake {
+    background-image: url(../images/carrot-cake.jpg);
+    background-size: cover;
+    background-position: center;
 }
