@@ -6,26 +6,24 @@ function commoncodeNA($PageOpen)
     <div class="NavAll">
         <div class="TopNav">
             <div class="MainLinks">
-                <a href="HomeAR.php" <?php if ($PageOpen == "HomeAR") {
+                <a href="HomeFR.php" <?php if ($PageOpen == "HomeFR") {
                                             print("class='active'");
-                                        } ?>>الصفحة الرئيسية</a>
-                <a href="AboutAR.php" <?php if ($PageOpen == "AboutAR") {
+                                        } ?>> ACCUEIL </a>
+                <a href="AboutFR.php" <?php if ($PageOpen == "AboutFR") {
                                             print("class='active'");
-                                        } ?>>عننا</a>
-                <a href="ProductsAR.php" <?php if ($PageOpen == "ProductsAR") {
+                                        } ?>>À PROPOS</a>
+                <a href="ProductsFR.php" <?php if ($PageOpen == "ProductsFR") {
                                                 print("class='active'");
-                                            } ?>>المنتجات</a>
-                <a href="ContactAR.php" <?php if ($PageOpen == "ContactAR") {
+                                            } ?>>PRODUITS</a>
+                <a href="ContactFR.php" <?php if ($PageOpen == "ContactFR") {
                                             print("class='active'");
-                                        } ?>>التواصل</a>
+                                        } ?>>CONTACT</a>
             </div>
             <div class="Icon">
                 <img src="../img/download.jpg">
                 <a href="#" id="basketIcon"> 🛒
                     <a href="../ProjectEN/Home.php">English</a>
-
             </div>
-
 
         </div>
 

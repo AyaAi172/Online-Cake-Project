@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <?php
-    include_once("CommonCodeAR.php");
-    commoncodeNA("Products");
-    ?>
-   
+  <?php
+  include_once("CommonCodeFR.php");
+  commoncodeNA("HomeFR")
+  ?>
 </body>
 
 </html>

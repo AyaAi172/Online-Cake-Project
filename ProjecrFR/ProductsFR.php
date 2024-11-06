@@ -10,10 +10,10 @@
 
 <body>
     <?php
-    include_once("CommonCodeAR.php");
-    commoncodeNA("Contact")
+    include_once("CommonCodeFR.php");
+    commoncodeNA("ProductsFR");
     ?>
-
+   
 </body>
 
 </html>

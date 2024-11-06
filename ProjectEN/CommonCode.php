@@ -22,7 +22,7 @@ function commoncodeNA($PageOpen)
             <div class="Icon">
                 <img src="../img/download.jpg">
                 <a href="#" id="basketIcon"> 🛒
-                    <a href="../ProjecrAR/HomeAR.php">Arabic</a>
+                    <a href="../ProjecrFR/HomeFR.php">French</a>
             </div>
 
         </div>
