@@ -18,6 +18,9 @@ function commoncodeNA($PageOpen)
                 <a href="Contact.php" <?php if ($PageOpen == "Contact") {
                                             print("class='active'");
                                         } ?>>Contact</a>
+                <a href="Register.php" <?php if ($PageOpen == "Register") {
+                                            print("class='active'");
+                                        } ?>>Register</a>
             </div>
             <div class="Icon">
                 <img src="../img/download.jpg">
