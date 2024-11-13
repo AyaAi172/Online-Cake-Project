@@ -17,18 +17,18 @@
         ?>
         <div class="AllProducts">
             <?php
-            $myFile = fopen("pro.csv", "r");
+            $myFile = fopen("../ProjectEN/Products details/pro.csv", "r");
             $line = fgets($myFile);
             while (!feof($myFile)) {
                 $line = fgets($myFile);
                 $arrayOfPiesces = explode(";", $line);
-                if (count($arrayOfPiesces) == 6 ) {
+                if (count($arrayOfPiesces) == 6) {
             ?>
 
                     <div class="OneProduct">
                         <div><?= $arrayOfPiesces[1]  ?></div>
-                        <img src="./<?= $arrayOfPiesces[4]  ?>">
-                        <div class="Price" ><?= $arrayOfPiesces[2] ?> € </div>
+                        <img src="./Images/<?= $arrayOfPiesces[4]  ?>">
+                        <div class="Price"><?= $arrayOfPiesces[2] ?> € </div>
                         <div><?= $arrayOfPiesces[3]  ?></div>
                         <button class="ADD">ADD TO CART 🛒</button>
                     </div>
@@ -39,4 +39,5 @@
         </div>
 
     </body>
+
 </html>
