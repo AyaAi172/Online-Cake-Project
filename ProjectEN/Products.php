@@ -22,14 +22,15 @@
             while (!feof($myFile)) {
                 $line = fgets($myFile);
                 $arrayOfPiesces = explode(";", $line);
-                if (count($arrayOfPiesces) == 6) {
+                if (count($arrayOfPiesces) == 5) {
             ?>
 
                     <div class="OneProduct">
-                        <div><?= $arrayOfPiesces[1]  ?></div>
-                        <img src="./Images/<?= $arrayOfPiesces[4]  ?>">
+                        <div class="ProductName"><?= $arrayOfPiesces[1]  ?></div>
+                        <div class="ImageContainer">
+                        <img src="./Images/<?= $arrayOfPiesces[3]  ?>" class="ProductImage">
+                        </div>
                         <div class="Price"><?= $arrayOfPiesces[2] ?> € </div>
-                        <div><?= $arrayOfPiesces[3]  ?></div>
                         <button class="ADD">ADD TO CART 🛒</button>
                     </div>
             <?php

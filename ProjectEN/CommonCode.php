@@ -21,7 +21,6 @@ function commoncodeNA($PageOpen)
                                         } ?>>Contact</a>                        
             </div>
             <div class="Icon">
-                <img src="../img/download.jpg">
                 <a href="#" id="basketIcon"> 🛒
                     <a href="../ProjecrFR/HomeFR.php">French</a>
             </div>
