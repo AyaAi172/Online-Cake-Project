@@ -16,9 +16,12 @@ function commoncodeNA($PageOpen)
                                             print("class='active'");
                                         } ?>>Products</a>
 
-                <a href="Contact.php" <?php if ($PageOpen == "Contact") {
+                <a href="Regester.php" <?php if ($PageOpen == "Regester") {
                                             print("class='active'");
-                                        } ?>>Contact</a>                        
+                                        } ?>>Regester</a>
+                <a href="Login.php" <?php if ($PageOpen == "Login") {
+                                            print("class='active'");
+                                        } ?>>Login</a>
             </div>
             <div class="Icon">
                 <a href="#" id="basketIcon"> 🛒
