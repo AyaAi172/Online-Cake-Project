@@ -20,8 +20,8 @@ function commoncodeNA($PageOpen)
                                             print("class='active'");
                                         } ?>>Regester</a>
                 <a href="Login.php" <?php if ($PageOpen == "Login") {
-                                            print("class='active'");
-                                        } ?>>Login</a>
+                                        print("class='active'");
+                                    } ?>>Login</a>
             </div>
             <div class="Icon">
                 <a href="#" id="basketIcon"> 🛒
@@ -32,5 +32,23 @@ function commoncodeNA($PageOpen)
     </div>
 
 <?php
+}
+?>
+
+<?php
+
+function userExists($username)
+{
+    $fileUsers = fopen("clients.csv", "r");
+    if ($fileUsers) {
+        while (($line = fgetcsv($fileUsers, 100, ";")) !== false) {
+            if ($line[0] === $username)
+                fclose($fileUsers);
+            return true;
+        }
+
+        fclose($fileUsers);
+    }
+    return false;
 }
 ?>
