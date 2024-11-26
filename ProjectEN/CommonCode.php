@@ -33,22 +33,40 @@ function commoncodeNA($PageOpen)
 
 <?php
 }
-?>
 
-<?php
+$registrationSuccessful = false;
 
-function userExists($username)
+function userExists($checkUser)
 {
-    $fileUsers = fopen("clients.csv", "r");
-    if ($fileUsers) {
-        while (($line = fgetcsv($fileUsers, 100, ";")) !== false) {
-            if ($line[0] === $username)
-                fclose($fileUsers);
+    $fileUser = fopen("client.csv", "r");
+    while (!feof($fileUser)) {
+        $existingUser =  fgets($fileUser);
+        $existingArray = explode(";", $existingUser);
+        if ($existingArray[0] == $checkUser) {
             return true;
         }
-
-        fclose($fileUsers);
     }
+    fclose($fileUser);
     return false;
 }
+
+function passwordmatch($checkUser,$checkpassword)
+{
+    $fileUser = fopen("client.csv", "r");
+    while (!feof($fileUser)) {
+        $existingUser =  fgets($fileUser);
+        $existingArray = explode(";", $existingUser);
+        if ($existingArray[0] == $checkUser) {
+            if ($existingArray[1] == $checkpassword)
+            return true;
+        }else {
+            return false;
+        }
+    }
+    fclose($fileUser);
+    return false;
+}
+
+
+
 ?>
