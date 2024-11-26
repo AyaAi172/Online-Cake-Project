@@ -13,10 +13,9 @@
     include_once("CommonCode.php");
     commoncodeNA("Login");
 
-    if(isset($_POST("usernsme"), $_POST("password"))){
-        if ($existingUser == ($_POST["username"])){
-            if (checkpassword($_POST["username"], $_POST["password"])){
-                
+    if (isset($_POST["usernsme"], $_POST["password"])) {
+        if ($existingUser == ($_POST["username"])) {
+            if (passwordmatch($_POST["username"], $_POST["password"])) {
             }
         }
     }

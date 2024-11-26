@@ -50,7 +50,7 @@ function userExists($checkUser)
     return false;
 }
 
-function passwordmatch($checkUser,$checkpassword)
+function passwordmatch($checkUser, $checkpassword)
 {
     $fileUser = fopen("client.csv", "r");
     while (!feof($fileUser)) {
@@ -58,8 +58,8 @@ function passwordmatch($checkUser,$checkpassword)
         $existingArray = explode(";", $existingUser);
         if ($existingArray[0] == $checkUser) {
             if ($existingArray[1] == $checkpassword)
-            return true;
-        }else {
+                return true;
+        } else {
             return false;
         }
     }

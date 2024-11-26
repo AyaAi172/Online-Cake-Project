@@ -11,6 +11,9 @@
 <body>
 
     <?php
+    include_once("CommonCode.php");
+    commoncodeNA("Home");
+
     $loginSuccessful = false;
 
     if (isset($_POST["username"], $_POST["password"])) {

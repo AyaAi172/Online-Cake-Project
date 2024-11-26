@@ -10,11 +10,11 @@
 
 <body>
     <?php
-    
+
 
 
     include_once("CommonCode.php");
-    commoncodeNA("Register");
+    commoncodeNA("Regester");
 
     // this will check if the username. password and confirmpassword exists or not 
     if (isset($_POST["username"], $_POST["password"], $_POST["confirmpassword"])) {
