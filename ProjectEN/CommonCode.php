@@ -36,18 +36,18 @@ function commoncodeNA($PageOpen)
 
 $registrationSuccessful = false;
 
-function userExists($checkUser)
+function userExists($checkUser) // this function is to check if the user already exists
 {
-    $fileUser = fopen("client.csv", "r");
-    while (!feof($fileUser)) {
-        $existingUser =  fgets($fileUser);
-        $existingArray = explode(";", $existingUser);
+    $fileUser = fopen("client.csv", "r"); // this code is to open the file and read the information in it
+    while (!feof($fileUser)) { // this loop is to read the information in the file
+        $existingUser =  fgets($fileUser); // 
+        $existingArray = explode(";", $existingUser); // this code is to explode the information in the file and put it in an array
         if ($existingArray[0] == $checkUser) {
             return true;
         }
     }
-    fclose($fileUser);
-    return false;
+    fclose($fileUser); 
+    return false; // this code is to return false if the user does not exist
 }
 
 function passwordmatch($checkUser, $checkpassword)
@@ -58,13 +58,11 @@ function passwordmatch($checkUser, $checkpassword)
         $existingArray = explode(";", $existingUser);
         if ($existingArray[0] == $checkUser) {
             if ($existingArray[1] == $checkpassword)
-                return true;
-        } else {
-            return false;
-        }
+                return true; // match found
+        } 
     }
     fclose($fileUser);
-    return false;
+    return false; // no match found after checking all the users
 }
 
 

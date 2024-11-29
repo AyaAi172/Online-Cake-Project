@@ -13,34 +13,16 @@
     include_once("CommonCode.php");
     commoncodeNA("Login");
 
-    if (isset($_POST["usernsme"], $_POST["password"])) {
-        if ($existingUser == ($_POST["username"])) {
-            if (passwordmatch($_POST["username"], $_POST["password"])) {
-            }
-        }
-    }
-
-
-    /*$loginSuccessful = false;
-
     if (isset($_POST["username"], $_POST["password"])) {
-        if (($file = fopen("client.csv", "r")) !== false) {
-            while (($line = fgetcsv($file, 100, ";")) !== false) {
-                if ($line[0] === $_POST["username"] && $line[1] === $_POST["password"]) {
-                    $loginSuccessful = true;
-                    break;
-                }
-            }
-            fclose($file);
-        }
-       
+        $newpassword =  str_replace(";", "", $_POST["password"]);
 
-        if ($loginSuccessful) {
-            print("<p>Welcome" .' ' . htmlspecialchars($_POST["username"]) . "!</p>");
+        if (passwordmatch($_POST["username"],  $newpassword)) {
+            print("<p>Welcome" . ' ' . htmlspecialchars($_POST["username"]) . "!</p>");
         } else {
             echo "<p>Invalid username or password. Please try again.</p>";
         }
-    }*/
+    }
+
 
     ?>
 
