@@ -16,8 +16,14 @@ function commoncodeNA($PageOpen)
                 <a href="Products.php" <?php if ($PageOpen == "Products") {
                                             print("class='active'");
                                         } ?>>Products</a>
-                <?php if (isset($_SESSION['username'])): ?>
+                <?php if (isset($_SESSION['username']) && $_SESSION['role'] === 'admin'): ?>
+                    <a href="AddProduct.php" <?php if ($PageOpen == "AddProduct") {
+                                                    print("class='active'");
+                                                } ?>>Add Product</a>
+                <?php endif; ?>
 
+                <?php if (!isset($_SESSION['username'])): ?>
+                    <!-- Display Register and Login only if the user is not logged in -->
                     <a href="Regester.php" <?php if ($PageOpen == "Regester") {
                                                 print("class='active'");
                                             } ?>>Register</a>
@@ -25,13 +31,8 @@ function commoncodeNA($PageOpen)
                                             print("class='active'");
                                         } ?>>Login</a>
                 <?php endif; ?>
-
-
-
             </div>
-            <div class="MainLinks">
-                <!-- Existing links here -->
-            </div>
+
             <div class="Icon">
                 <a href="#" id="basketIcon"> 🛒</a>
                 <?php if (isset($_SESSION['username'])): ?>
@@ -54,6 +55,7 @@ function commoncodeNA($PageOpen)
 <?php
 }
 
+
 $registrationSuccessful = false;
 
 function userExists($checkUser) // this function is to check if the user already exists
@@ -70,6 +72,7 @@ function userExists($checkUser) // this function is to check if the user already
     return false; // this code is to return false if the user does not exist
 }
 
+// this function is to register the user and write the information in the file
 function passwordmatch($checkUser, $checkpassword)
 {
     $fileUser = fopen("client.csv", "r");
@@ -85,6 +88,30 @@ function passwordmatch($checkUser, $checkpassword)
     return false; // no match found after checking all the users
 }
 
+function getUserRole($username)
+{
+    $fileUser = fopen("client.csv", "r");
+    while (!feof($fileUser)) {
+        $line = fgets($fileUser);
+        $data = explode(";", $line);
+        if ($data[0] === $username) {
+            fclose($fileUser);
+            return trim($data[2]); // Assuming the role is the third column in the CSV file
+        }
+    }
+    fclose($fileUser);
+    return "customer"; // Default role
+}
+
+// 
+function loginUser($username, $role)
+{
+    $_SESSION['username'] = $username; // Set session username
+    $_SESSION['role'] = $role;        // Set session role
+}
+
+
+// This function logs out the user by unsetting and destroying the session
 function logoutUser()
 {
     // Start session if not already started
@@ -92,14 +119,13 @@ function logoutUser()
         session_start();
     }
 
-    // Unset all session variables
-    session_unset();
+    session_unset(); // Unset all session values
 
-    // Destroy the session
-    session_destroy();
+    session_destroy();  // Destroy the session
 
-    // Redirect to Home page
     header("Location: Home.php");
     exit();
 }
+
+
 ?>

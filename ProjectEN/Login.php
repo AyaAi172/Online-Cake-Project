@@ -5,32 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Cake.css?= time() ?>">
-    <title>Login</title>
+    <title>Cake</title>
 </head>
 
 <body>
     <?php
-    session_start();
     include_once("CommonCode.php");
     commoncodeNA("Login");
 
-    if (isset($_POST["username"], $_POST["password"])) {
-        $newpassword =  str_replace(";", "", $_POST["password"]);
+    $feedbackMessage = ""; // Initialize feedback message
 
-        if (passwordmatch($_POST["username"],  $newpassword)) {
-            $_SESSION["username"] = $_POST["username"]; // store the username in the session
-            header("Location: Home.php"); // this code is to redirect the user to the home page
+    // Check if username and password are submitted
+    if (isset($_POST["username"], $_POST["password"])) {
+        $username = $_POST["username"]; // Assign posted username
+        $newpassword = str_replace(";", "", $_POST["password"]); // Clean posted password
+
+        if (passwordmatch($username, $newpassword)) {
+            // Get the role of the user
+            $role = getUserRole($username);
+
+            // Log in the user and set session variables
+            loginUser($username, $role);
+
+            // Redirect to the Home page
+            header("Location: Home.php");
             exit();
         } else {
-            $feedbackMessage = "Invalid username or password. Please try again:)";
+            // Invalid credentials feedback
+            $feedbackMessage = "Invalid username or password. Please try again :)";
         }
     }
-
-
     ?>
+
+    <!-- Display feedback message -->
     <?php if (!empty($feedbackMessage)): ?>
         <p style="color: red; text-align: center;"><?= htmlspecialchars($feedbackMessage) ?></p>
     <?php endif; ?>
+
+    <!-- Login form -->
     <div class="form-container">
         <form method="POST">
             <div class="regesterform">
@@ -44,7 +56,6 @@
             </div>
         </form>
     </div>
-
 </body>
 
 </html>
