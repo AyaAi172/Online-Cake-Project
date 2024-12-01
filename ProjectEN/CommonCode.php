@@ -1,4 +1,5 @@
 <?php
+session_start();
 function commoncodeNA($PageOpen)
 {
 ?>
@@ -15,18 +16,37 @@ function commoncodeNA($PageOpen)
                 <a href="Products.php" <?php if ($PageOpen == "Products") {
                                             print("class='active'");
                                         } ?>>Products</a>
+                <?php if (isset($_SESSION['username'])): ?>
 
-                <a href="Regester.php" <?php if ($PageOpen == "Regester") {
+                    <a href="Regester.php" <?php if ($PageOpen == "Regester") {
+                                                print("class='active'");
+                                            } ?>>Register</a>
+                    <a href="Login.php" <?php if ($PageOpen == "Login") {
                                             print("class='active'");
-                                        } ?>>Regester</a>
-                <a href="Login.php" <?php if ($PageOpen == "Login") {
-                                        print("class='active'");
-                                    } ?>>Login</a>
+                                        } ?>>Login</a>
+                <?php endif; ?>
+
+
+
+            </div>
+            <div class="MainLinks">
+                <!-- Existing links here -->
             </div>
             <div class="Icon">
-                <a href="#" id="basketIcon"> 🛒
-                    <a href="../ProjecrFR/HomeFR.php">French</a>
+                <a href="#" id="basketIcon"> 🛒</a>
+                <?php if (isset($_SESSION['username'])): ?>
+                    <span style="margin-left: 10px;">
+                        👤 Welcome <?= htmlspecialchars($_SESSION['username']) ?>
+                    </span>
+                    <a href="Logout.php" style="margin-left: 10px;">Logout</a>
+                <?php else: ?>
+                    <span style="margin-left: 10px;">
+                        👤 Unknown user
+                    </span>
+                <?php endif; ?>
+                <a href="../ProjecrFR/HomeFR.php" style="margin-left: 10px;">French</a>
             </div>
+
 
         </div>
     </div>
@@ -46,7 +66,7 @@ function userExists($checkUser) // this function is to check if the user already
             return true;
         }
     }
-    fclose($fileUser); 
+    fclose($fileUser);
     return false; // this code is to return false if the user does not exist
 }
 
@@ -59,12 +79,27 @@ function passwordmatch($checkUser, $checkpassword)
         if ($existingArray[0] == $checkUser) {
             if ($existingArray[1] == $checkpassword)
                 return true; // match found
-        } 
+        }
     }
     fclose($fileUser);
     return false; // no match found after checking all the users
 }
 
+function logoutUser()
+{
+    // Start session if not already started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
+    // Unset all session variables
+    session_unset();
 
+    // Destroy the session
+    session_destroy();
+
+    // Redirect to Home page
+    header("Location: Home.php");
+    exit();
+}
 ?>
