@@ -45,7 +45,16 @@ function commoncodeNA($PageOpen)
                         👤 Unknown user
                     </span>
                 <?php endif; ?>
-                <a href="../ProjecrFR/HomeFR.php" style="margin-left: 10px;">French</a>
+                <form method="POST">
+                <select name="selectedLang" id="selectLang" onchange="this.form.submit()">
+                    <option value="EN"  <?php if($_SESSION["language"] == "EN"){
+                        print ("selected");
+                    } ?> >English</option>
+                    <option value="FR" <?php if($_SESSION["language"] == "FR"){
+                        print ("selected");   
+                    } ?>>French</option>
+                </select>            
+            </form>
             </div>
 
 
