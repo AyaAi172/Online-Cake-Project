@@ -7,27 +7,27 @@ function commoncodeNA($PageOpen)
     <div class="NavAll">
         <div class="TopNav">
             <div class="MainLinks">
-                <a href="Home.php" <?php if ($PageOpen == "Home") {
+                <a href="../Pages/Home.php" <?php if ($PageOpen == "Home") {
                                         print("class='active'");
                                     } ?>>Home</a>
-                <a href="About.php" <?php if ($PageOpen == "About") {
+                <a href="../Pages/About.php" <?php if ($PageOpen == "About") {
                                         print("class='active'");
                                     } ?>>About</a>
-                <a href="Products.php" <?php if ($PageOpen == "Products") {
+                <a href="../Pages/Products.php" <?php if ($PageOpen == "Products") {
                                             print("class='active'");
                                         } ?>>Products</a>
                 <?php if (isset($_SESSION['username']) && $_SESSION['role'] === 'admin'): ?>
-                    <a href="AddProduct.php" <?php if ($PageOpen == "AddProduct") {
+                    <a href="../Pages/AddProduct.php" <?php if ($PageOpen == "AddProduct") {
                                                     print("class='active'");
                                                 } ?>>Add Product</a>
                 <?php endif; ?>
 
                 <?php if (!isset($_SESSION['username'])): ?>
                     <!-- Display Register and Login only if the user is not logged in -->
-                    <a href="Regester.php" <?php if ($PageOpen == "Regester") {
+                    <a href="../Pages/Regester.php" <?php if ($PageOpen == "Register") {
                                                 print("class='active'");
                                             } ?>>Register</a>
-                    <a href="Login.php" <?php if ($PageOpen == "Login") {
+                    <a href="../Pages/Login.php" <?php if ($PageOpen == "Login") {
                                             print("class='active'");
                                         } ?>>Login</a>
                 <?php endif; ?>
@@ -39,22 +39,13 @@ function commoncodeNA($PageOpen)
                     <span style="margin-left: 10px;">
                         👤 Welcome <?= htmlspecialchars($_SESSION['username']) ?>
                     </span>
-                    <a href="Logout.php" style="margin-left: 10px;">Logout</a>
+                    <a href="../Pages/Logout.php" style="margin-left: 10px;">Logout</a>
                 <?php else: ?>
                     <span style="margin-left: 10px;">
                         👤 Unknown user
                     </span>
                 <?php endif; ?>
-                <form method="POST">
-                <select name="selectedLang" id="selectLang" onchange="this.form.submit()">
-                    <option value="EN"  <?php if($_SESSION["language"] == "EN"){
-                        print ("selected");
-                    } ?> >English</option>
-                    <option value="FR" <?php if($_SESSION["language"] == "FR"){
-                        print ("selected");   
-                    } ?>>French</option>
-                </select>            
-            </form>
+                <a href="../ProjecrFR/HomeFR.php" style="margin-left: 10px;">French</a>
             </div>
 
 
@@ -69,7 +60,7 @@ $registrationSuccessful = false;
 
 function userExists($checkUser) // this function is to check if the user already exists
 {
-    $fileUser = fopen("client.csv", "r"); // this code is to open the file and read the information in it
+    $fileUser = fopen("../Database/client.csv", "r"); // this code is to open the file and read the information in it
     while (!feof($fileUser)) { // this loop is to read the information in the file
         $existingUser =  fgets($fileUser); // 
         $existingArray = explode(";", $existingUser); // this code is to explode the information in the file and put it in an array
@@ -84,7 +75,7 @@ function userExists($checkUser) // this function is to check if the user already
 // this function is to register the user and write the information in the file
 function passwordmatch($checkUser, $checkpassword)
 {
-    $fileUser = fopen("client.csv", "r");
+    $fileUser = fopen("../Database/client.csv", "r");
     while (!feof($fileUser)) {
         $existingUser =  fgets($fileUser);
         $existingArray = explode(";", $existingUser);
@@ -99,7 +90,7 @@ function passwordmatch($checkUser, $checkpassword)
 
 function getUserRole($username)
 {
-    $fileUser = fopen("client.csv", "r");
+    $fileUser = fopen("../Database/client.csv", "r");
     while (!feof($fileUser)) {
         $line = fgets($fileUser);
         $data = explode(";", $line);

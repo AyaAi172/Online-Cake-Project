@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Cake.css?= time() ?>">
+    <link rel="stylesheet" href="../Design/Cake.css?= time() ?>">
     <title>Cake</title>
 </head>
 
 <body>
     <?php
-    include_once("CommonCode.php");
-    commoncodeNA("Regester");
+    include_once("../Database/CommonCode.php");
+    commoncodeNA("Register");
 
     $feedbackMessage = "";
     // this code is for the registration form to check if the user entered all the information
