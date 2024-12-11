@@ -13,6 +13,7 @@
     <?php
     include_once("CommonCode.php");
     commoncodeNA("Home");
+    $arrayOfStrings["Home"]  
 
     ?>
 </body>
