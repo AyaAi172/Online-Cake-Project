@@ -4,42 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Design/Cake.css?= time() ?>">
-    <title>Cake</title>
+    <link rel="stylesheet" href="../Design/Cake.css">
+    <title>Products</title>
 </head>
 
 <body>
+    <?php
+    include_once("../Database/CommonCode.php");
+    commoncodeNA("Products");
 
-    <body>
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = []; // Initialize cart if not set
+    }
+    ?>
+
+    <div class="AllProducts">
         <?php
-        include_once("../Database/CommonCode.php");
-        commoncodeNA("Products");
-        ?>
-        <div class="AllProducts">
-            <?php
-            $myFile = fopen("../Database/ProductsTR.csv", "r");
+        $myFile = fopen("../Database/ProductsTranslation.csv", "r");
+        $line = fgets($myFile); // Skip the header line
+
+        while (!feof($myFile)) {
             $line = fgets($myFile);
-            while (!feof($myFile)) {
-                $line = fgets($myFile);
-                $arrayOfPiesces = explode(";", $line);
-                
-                if (count($arrayOfPiesces) == 7) {
-            ?>
+            $arrayOfPieces = explode(";", $line);
 
-                    <div class="OneProduct">
-                        <div class="ProductName"><?= $arrayOfPiesces[1]  ?></div>
-                        <div class="ImageContainer">
-                            <img src="../Database/Images/<?=$arrayOfPiesces[3]  ?>" class="ProductImage">
-                        </div>
-                        <div class="Price"><?=$arrayOfPiesces[2] ?> € </div>
-                        <button class="ADD">ADD TO CART 🛒</button>
+            if (count($arrayOfPieces) == 7) {
+                $productID = htmlspecialchars($arrayOfPieces[0]);
+                $productName = ($_SESSION["language"] == "EN") ? htmlspecialchars($arrayOfPieces[1]) : htmlspecialchars($arrayOfPieces[5]);
+                $productPrice = htmlspecialchars($arrayOfPieces[2]);
+                $productImage = htmlspecialchars($arrayOfPieces[3]);
+                $addToBasketText = ($_SESSION["language"] == "EN") ? htmlspecialchars($arrayOfPieces[4]) : htmlspecialchars($arrayOfPieces[6]);
+        ?>
+                <div class="OneProduct">
+                    <div class="ProductName"><?= $productName ?></div>
+                    <div class="ImageContainer">
+                        <img src="../Database/Images/<?= $productImage ?>" class="ProductImage" alt="<?= $productName ?>">
                     </div>
-            <?php
-                }
-            }
-            ?>
-        </div>
+                    <div class="Price"><?= $productPrice ?> €</div>
 
-    </body>
+                    <!-- Buy Button -->
+                    <form method="POST" action="Products.php">
+                        <input type="hidden" name="productID" value="<?= $productID ?>">
+                        <input type="hidden" name="productName" value="<?= $productName ?>">
+                        <input type="hidden" name="productPrice" value="<?= $productPrice ?>">
+                        <input type="hidden" name="productImage" value="<?= $productImage ?>">
+                        <button type="submit" name="buy" class="ADD"><?= $addToBasketText ?> 🛒</button>
+                    </form>
+                </div>
+        <?php
+            }
+        }
+        fclose($myFile);
+
+        // Handle Buy Button Logic
+        if (isset($_POST['buy'])) {
+            $product = [
+                'id' => $_POST['productID'],
+                'name' => $_POST['productName'],
+                'price' => $_POST['productPrice'],
+                'image' => $_POST['productImage'],
+            ];
+
+            $_SESSION['cart'][] = $product; // Add product to the cart
+            header("Location: Products.php"); // Avoid form resubmission
+            exit();
+        }
+        ?>
+    </div>
+</body>
 
 </html>

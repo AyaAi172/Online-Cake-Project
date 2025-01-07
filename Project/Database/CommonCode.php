@@ -1,35 +1,71 @@
 <?php
-session_start();
+session_start(); // Start session management
+
+// Step 1: Set the default language if not already set
+if (!isset($_SESSION["language"])) {
+    $_SESSION["language"] = "EN"; // Default language is English
+}
+
+// Step 2: Allow language switching via GET parameter
+if (isset($_GET["language"])) {
+    $_SESSION["language"] = $_GET["language"];
+}
+
+// Step 3: Load translations from NavBarTranslation.csv
+$arrayOfStrings = []; // Array to store translations
+
+$fileTranslations = fopen("../Database/NavBarTranslation.csv", "r");
+$header = fgets($fileTranslations); // Skip the first row (header)
+
+while (!feof($fileTranslations)) {
+    $line = fgets($fileTranslations);
+    $arrayOfPieces = explode(",", $line); // Split the line by commas
+    if (count($arrayOfPieces) >= 3) { // Ensure the line has enough fields
+        $arrayOfStrings[$arrayOfPieces[0]] = ($_SESSION["language"] == "EN")
+            ? $arrayOfPieces[1] // English column
+            : $arrayOfPieces[2]; // French column
+    }
+}
+fclose($fileTranslations); // Close the file
+
+// Step 4: Navigation bar function
 function commoncodeNA($PageOpen)
 {
+    echo '<link rel="stylesheet" href="../Design/Cake.css">';
+    global $arrayOfStrings; // Access the translations array
+    
 ?>
-
     <div class="NavAll">
         <div class="TopNav">
             <div class="MainLinks">
                 <a href="../Pages/Home.php" <?php if ($PageOpen == "Home") {
-                                        print("class='active'");
-                                    } ?>>Home</a>
+                                                print("class='active'");
+                                            } ?>><?php echo $arrayOfStrings["Home"]; ?></a>
                 <a href="../Pages/About.php" <?php if ($PageOpen == "About") {
-                                        print("class='active'");
-                                    } ?>>About</a>
+                                                    print("class='active'");
+                                                } ?>><?php echo $arrayOfStrings["About"]; ?></a>
                 <a href="../Pages/Products.php" <?php if ($PageOpen == "Products") {
-                                            print("class='active'");
-                                        } ?>>Products</a>
+                                                    print("class='active'");
+                                                } ?>><?php echo $arrayOfStrings["Products"]; ?></a>
                 <?php if (isset($_SESSION['username']) && $_SESSION['role'] === 'admin'): ?>
                     <a href="../Pages/AddProduct.php" <?php if ($PageOpen == "AddProduct") {
-                                                    print("class='active'");
-                                                } ?>>Add Product</a>
+                                                            print("class='active'");
+                                                        } ?>><?php echo $arrayOfStrings["AddProduct"]; ?></a>
                 <?php endif; ?>
 
                 <?php if (!isset($_SESSION['username'])): ?>
-                    <!-- Display Register and Login only if the user is not logged in -->
                     <a href="../Pages/Regester.php" <?php if ($PageOpen == "Register") {
-                                                print("class='active'");
-                                            } ?>>Register</a>
+                                                        print("class='active'");
+                                                    } ?>><?php echo $arrayOfStrings["Register"]; ?></a>
                     <a href="../Pages/Login.php" <?php if ($PageOpen == "Login") {
-                                            print("class='active'");
-                                        } ?>>Login</a>
+                                                        print("class='active'");
+                                                    } ?>><?php echo $arrayOfStrings["Login"]; ?></a>
+                <?php else: ?>
+                    <!-- Shopping Cart Link -->
+                    <a href="../Pages/ShoppingCart.php" <?php if ($PageOpen == "ShoppingCart") {
+                                                            print("class='active'");
+                                                        } ?>>Cart 🛒</a>
+                    <a href="../Pages/Logout.php" style="margin-left: 10px;"><?php echo $arrayOfStrings["Logout"]; ?></a>
                 <?php endif; ?>
             </div>
 
@@ -37,58 +73,62 @@ function commoncodeNA($PageOpen)
                 <a href="#" id="basketIcon"> 🛒</a>
                 <?php if (isset($_SESSION['username'])): ?>
                     <span style="margin-left: 10px;">
-                        👤 Welcome <?= htmlspecialchars($_SESSION['username']) ?>
+                        👤 <?php echo $arrayOfStrings["Welcome"] . " " . htmlspecialchars($_SESSION['username']); ?>
                     </span>
-                    <a href="../Pages/Logout.php" style="margin-left: 10px;">Logout</a>
                 <?php else: ?>
                     <span style="margin-left: 10px;">
-                        👤 Unknown user
+                        👤 <?php echo $arrayOfStrings["Unknown"]; ?>
                     </span>
                 <?php endif; ?>
-                <a href="../ProjecrFR/HomeFR.php" style="margin-left: 10px;">French</a>
+                <div class="language-selector">
+                    <form method="GET" style="margin: 0;">
+                        <select name="language" onchange="this.form.submit()">
+                            <option value="EN" <?php if ($_SESSION["language"] == "EN") echo "selected"; ?>>English</option>
+                            <option value="FR" <?php if ($_SESSION["language"] == "FR") echo "selected"; ?>>French</option>
+                        </select>
+                    </form>
+                </div>
+
             </div>
-
-
         </div>
     </div>
-
 <?php
 }
 
 
+// Additional functions for user management
 $registrationSuccessful = false;
 
-function userExists($checkUser) // this function is to check if the user already exists
+function userExists($checkUser) // Check if the user already exists
 {
-    $fileUser = fopen("../Database/client.csv", "r"); // this code is to open the file and read the information in it
-    while (!feof($fileUser)) { // this loop is to read the information in the file
-        $existingUser =  fgets($fileUser); // 
-        $existingArray = explode(";", $existingUser); // this code is to explode the information in the file and put it in an array
+    $fileUser = fopen("../Database/client.csv", "r"); // Open the file for reading
+    while (!feof($fileUser)) {
+        $existingUser = fgets($fileUser);
+        $existingArray = explode(";", $existingUser);
         if ($existingArray[0] == $checkUser) {
-            return true;
+            return true; // User exists
         }
     }
     fclose($fileUser);
-    return false; // this code is to return false if the user does not exist
+    return false; // User does not exist
 }
 
-// this function is to register the user and write the information in the file
-function passwordmatch($checkUser, $checkpassword)
+function passwordmatch($checkUser, $checkpassword) // Check if the password matches
 {
     $fileUser = fopen("../Database/client.csv", "r");
     while (!feof($fileUser)) {
-        $existingUser =  fgets($fileUser);
+        $existingUser = fgets($fileUser);
         $existingArray = explode(";", $existingUser);
         if ($existingArray[0] == $checkUser) {
             if ($existingArray[1] == $checkpassword)
-                return true; // match found
+                return true; // Match found
         }
     }
     fclose($fileUser);
-    return false; // no match found after checking all the users
+    return false; // No match found
 }
 
-function getUserRole($username)
+function getUserRole($username) // Retrieve the role of a user
 {
     $fileUser = fopen("../Database/client.csv", "r");
     while (!feof($fileUser)) {
@@ -96,36 +136,28 @@ function getUserRole($username)
         $data = explode(";", $line);
         if ($data[0] === $username) {
             fclose($fileUser);
-            return trim($data[2]); // Assuming the role is the third column in the CSV file
+            return trim($data[2]); // Assuming the role is the third column
         }
     }
     fclose($fileUser);
     return "customer"; // Default role
 }
 
-// 
-function loginUser($username, $role)
+function loginUser($username, $role) // Login the user
 {
     $_SESSION['username'] = $username; // Set session username
     $_SESSION['role'] = $role;        // Set session role
 }
 
-
-// This function logs out the user by unsetting and destroying the session
-function logoutUser()
+function logoutUser() // Logout the user
 {
-    // Start session if not already started
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
 
     session_unset(); // Unset all session values
-
     session_destroy();  // Destroy the session
-
     header("Location: Home.php");
     exit();
 }
-
-
 ?>

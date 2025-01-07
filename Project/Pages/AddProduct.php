@@ -10,8 +10,8 @@
 
 <body>
     <?php
-        include_once("../Database/CommonCode.php");
-        commoncodeNA("AddProduct");
+    include_once("../Database/CommonCode.php");
+    commoncodeNA("AddProduct");
 
     $feedbackMessage = "";
 
@@ -21,8 +21,10 @@
         header("Location: Home.php");
         exit();
     }
-    $filePath = "../Database/ProductsTR.csv";
 
+    $filePath = "../Database/ProductsTranslation.csv";
+
+    // Function to get the next available product ID
     function getNextID($filePath) {
         $lastID = 0;
         if (($file = fopen($filePath, "r")) !== FALSE) {
@@ -36,20 +38,20 @@
         return $lastID + 1; // Increment the last ID
     }
 
-    // Handle the form submission
-    if (isset($_POST['productName'], $_POST['productPrice'], $_POST['productImage'])) {
-        $productName = $_POST['productName'];
+    // Handle form submission
+    if (isset($_POST['productNameEN'], $_POST['productNameFR'], $_POST['productPrice'], $_POST['productImage'])) {
+        $productNameEN = $_POST['productNameEN']; // Product name in English
+        $productNameFR = $_POST['productNameFR']; // Product name in French
         $productPrice = $_POST['productPrice'];
         $productImage = $_POST['productImage'];
-        $productNameFR = $_POST['productNameFR'];
 
         // Open the CSV file in append mode
-        $file = fopen("../Database/ProductsTR.csv", "a");
+        $file = fopen($filePath, "a");
         $nextID = getNextID($filePath); // Get the next ID
 
         if ($file) {
-            // Write the new product to the file with a newline
-            fwrite($file, "\n" . $nextID . ";" . $productName . ";" . $productPrice . ";" . $productImage . ";" . ";" . $productNameFR. ";");
+            // Write the new product to the file
+            fwrite($file, "\n" . $nextID . ";" . $productNameEN . ";" . $productPrice . ";" . $productImage . ";Add to Cart;" . $productNameFR . ";Ajouter au panier");
 
             // Close the file
             fclose($file);
@@ -71,17 +73,16 @@
     <div class="form-container">
         <form method="POST">
             <div class="regesterform">
-                <input type="text" name="productName" placeholder="Product Name English" required>
+                <input type="text" name="productNameEN" placeholder="Product Name (English)" required>
+            </div>
+            <div class="regesterform">
+                <input type="text" name="productNameFR" placeholder="Product Name (French)" required>
             </div>
             <div class="regesterform">
                 <input type="number" name="productPrice" placeholder="Product Price" required>
             </div>
             <div class="regesterform">
                 <input type="text" name="productImage" placeholder="Product Image Path (e.g., images/product.jpg)" required>
-            </div>
-        
-            <div class="regesterform">
-                <input type="text" name="productNameFR" placeholder="product Name French " required>
             </div>
             <div class="regesterform">
                 <button type="submit">Add Product</button>
