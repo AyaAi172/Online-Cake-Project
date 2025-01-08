@@ -229,3 +229,44 @@ body {
     box-shadow: 0 0 5px rgba(232, 77, 136, 0.5);
     /* Glow effect */
 }
+
+/*Remove button*/
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+thead tr {
+    background-color: #f1f1f1;
+    border-bottom: 2px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd; /* Add border to each cell */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s ease;
+}
+
+th {
+    font-weight: bold;
+    color: #333;
+}
+
+td {
+    border-right: 1px solid #ddd; /* Add vertical lines between columns */
+}
+
+td:last-child, th:last-child {
+    border-right: none; /* Remove the right border for the last column */
+}

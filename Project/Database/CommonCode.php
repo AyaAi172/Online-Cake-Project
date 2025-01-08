@@ -1,5 +1,7 @@
 <?php
-session_start(); // Start session management
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start session only if none exists
+} // Start session management
 
 // Step 1: Set the default language if not already set
 if (!isset($_SESSION["language"])) {
@@ -32,8 +34,10 @@ fclose($fileTranslations); // Close the file
 function commoncodeNA($PageOpen)
 {
     echo '<link rel="stylesheet" href="../Design/Cake.css">';
-    global $arrayOfStrings; // Access the translations array
-    
+    global $arrayOfStrings;
+
+    // Calculate total cart items
+    $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 ?>
     <div class="NavAll">
         <div class="TopNav">
@@ -61,17 +65,18 @@ function commoncodeNA($PageOpen)
                                                         print("class='active'");
                                                     } ?>><?php echo $arrayOfStrings["Login"]; ?></a>
                 <?php else: ?>
-                    <!-- Shopping Cart Link -->
-                    <a href="../Pages/ShoppingCart.php" <?php if ($PageOpen == "ShoppingCart") {
-                                                            print("class='active'");
-                                                        } ?>>Cart 🛒</a>
                     <a href="../Pages/Logout.php" style="margin-left: 10px;"><?php echo $arrayOfStrings["Logout"]; ?></a>
                 <?php endif; ?>
             </div>
 
             <div class="Icon">
-                <a href="#" id="basketIcon"> 🛒</a>
                 <?php if (isset($_SESSION['username'])): ?>
+                    <!-- Cart link with item count -->
+                    <a href="../Pages/Cart.php" <?php if ($PageOpen == "Cart") {
+                                                    print("class='active'");
+                                                } ?>>
+                        <?php echo $arrayOfStrings["Cart"]; ?> 🛒 (<?= $cartCount ?>)
+                    </a>
                     <span style="margin-left: 10px;">
                         👤 <?php echo $arrayOfStrings["Welcome"] . " " . htmlspecialchars($_SESSION['username']); ?>
                     </span>
@@ -88,12 +93,12 @@ function commoncodeNA($PageOpen)
                         </select>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 <?php
 }
+
 
 
 // Additional functions for user management

@@ -1,3 +1,28 @@
+<?php
+include_once("../Database/CommonCode.php");
+
+// Initialize the shopping cart if not already set
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Handle "Add to Cart" button
+if (isset($_POST['addToCart'])) {
+    $product = [
+        'id' => $_POST['productID'],
+        'name' => $_POST['productName'],
+        'price' => (float) $_POST['productPrice'],
+        'image' => $_POST['productImage'],
+    ];
+
+    $_SESSION['cart'][] = $product; // Add product to the cart
+    header("Location: Products.php"); // Redirect to avoid form resubmission
+    exit();
+}
+
+commoncodeNA("Products"); // Navigation and common functionality
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,30 +34,20 @@
 </head>
 
 <body>
-    <?php
-    include_once("../Database/CommonCode.php");
-    commoncodeNA("Products");
-
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = []; // Initialize cart if not set
-    }
-    ?>
-
     <div class="AllProducts">
         <?php
-        $myFile = fopen("../Database/ProductsTranslation.csv", "r");
-        $line = fgets($myFile); // Skip the header line
+        $file = fopen("../Database/ProductsTranslation.csv", "r");
+        $line = fgets($file); // Skip header row
 
-        while (!feof($myFile)) {
-            $line = fgets($myFile);
+        while (!feof($file)) {
+            $line = fgets($file);
             $arrayOfPieces = explode(";", $line);
 
             if (count($arrayOfPieces) == 7) {
                 $productID = htmlspecialchars($arrayOfPieces[0]);
-                $productName = ($_SESSION["language"] == "EN") ? htmlspecialchars($arrayOfPieces[1]) : htmlspecialchars($arrayOfPieces[5]);
+                $productName = ($_SESSION['language'] == "EN") ? htmlspecialchars($arrayOfPieces[1]) : htmlspecialchars($arrayOfPieces[5]);
                 $productPrice = htmlspecialchars($arrayOfPieces[2]);
                 $productImage = htmlspecialchars($arrayOfPieces[3]);
-                $addToBasketText = ($_SESSION["language"] == "EN") ? htmlspecialchars($arrayOfPieces[4]) : htmlspecialchars($arrayOfPieces[6]);
         ?>
                 <div class="OneProduct">
                     <div class="ProductName"><?= $productName ?></div>
@@ -41,33 +56,22 @@
                     </div>
                     <div class="Price"><?= $productPrice ?> €</div>
 
-                    <!-- Buy Button -->
-                    <form method="POST" action="Products.php">
-                        <input type="hidden" name="productID" value="<?= $productID ?>">
-                        <input type="hidden" name="productName" value="<?= $productName ?>">
-                        <input type="hidden" name="productPrice" value="<?= $productPrice ?>">
-                        <input type="hidden" name="productImage" value="<?= $productImage ?>">
-                        <button type="submit" name="buy" class="ADD"><?= $addToBasketText ?> 🛒</button>
-                    </form>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <form method="POST" action="Products.php">
+                            <input type="hidden" name="productID" value="<?= htmlspecialchars($arrayOfPieces[0]) ?>">
+                            <input type="hidden" name="productName" value="<?= htmlspecialchars($productName) ?>">
+                            <input type="hidden" name="productPrice" value="<?= htmlspecialchars($productPrice) ?>">
+                            <input type="hidden" name="productImage" value="<?= htmlspecialchars($productImage) ?>">
+                            <button type="submit" name="addToCart" class="ADD">Add to Cart 🛒</button>
+                        </form>
+                    <?php else: ?>
+                        <p style="color: gray; font-size: 14px; text-align: center;">Login to add products to your cart.</p>
+                    <?php endif; ?>
                 </div>
         <?php
             }
         }
-        fclose($myFile);
-
-        // Handle Buy Button Logic
-        if (isset($_POST['buy'])) {
-            $product = [
-                'id' => $_POST['productID'],
-                'name' => $_POST['productName'],
-                'price' => $_POST['productPrice'],
-                'image' => $_POST['productImage'],
-            ];
-
-            $_SESSION['cart'][] = $product; // Add product to the cart
-            header("Location: Products.php"); // Avoid form resubmission
-            exit();
-        }
+        fclose($file);
         ?>
     </div>
 </body>
