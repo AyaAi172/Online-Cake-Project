@@ -85,7 +85,7 @@
                 <input type="text" name="productImage" placeholder="Product Image Path (e.g., images/product.jpg)" required>
             </div>
             <div class="regesterform">
-                <button type="submit">Add Product</button>
+                <button type="submit"><?= htmlspecialchars($arrayOfStrings['Add Product'] ?? 'Add Product') ?></button>
             </div>
         </form>
     </div>

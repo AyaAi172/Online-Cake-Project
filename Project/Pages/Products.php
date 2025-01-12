@@ -65,12 +65,15 @@ commoncodeNA("Products"); // Navigation and common functionality
                             <input type="hidden" name="productName" value="<?= htmlspecialchars($productName) ?>">
                             <input type="hidden" name="productPrice" value="<?= htmlspecialchars($productPrice) ?>">
                             <input type="hidden" name="productImage" value="<?= htmlspecialchars($productImage) ?>">
-                            <button type="submit" name="addToCart" class="add-to-cart">
-                                <?= htmlspecialchars($addToCartText) ?>
-                            </button>
+                            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
+                                <button type="submit" name="addToCart" class="add-to-cart">
+                                    <?= htmlspecialchars($addToCartText) ?>
+                                </button>
+                            <?php endif; ?>
+
                         </form>
                     <?php else: ?>
-                        <p style="color: gray; font-size: 14px; text-align: center;">Login to add products to your cart.</p>
+                        <p style="color: gray; font-size: 14px; text-align: center;"><?= htmlspecialchars($arrayOfStrings['Login to add products to your cart'] ?? 'Login to add products to your cart') ?></p>
                     <?php endif; ?>
                 </div>
         <?php
