@@ -55,6 +55,9 @@ function commoncodeNA($PageOpen)
                     <a href="../Pages/AddProduct.php" <?php if ($PageOpen == "AddProduct") {
                                                             print("class='active'");
                                                         } ?>><?php echo $arrayOfStrings["AddProduct"]; ?></a>
+                    <a href="../Pages/Orders.php" <?php if ($PageOpen == "Orders") {
+                                                        print("class='active'");
+                                                    } ?>><?php echo $arrayOfStrings["Orders"]; ?></a>
                 <?php endif; ?>
 
                 <?php if (!isset($_SESSION['username'])): ?>
@@ -70,13 +73,16 @@ function commoncodeNA($PageOpen)
             </div>
 
             <div class="Icon">
-                <?php if (isset($_SESSION['username'])): ?>
+                <?php if (isset($_SESSION['username']) && $_SESSION['role'] === 'customer'): ?>
+
                     <!-- Cart link with item count -->
                     <a href="../Pages/Cart.php" <?php if ($PageOpen == "Cart") {
                                                     print("class='active'");
                                                 } ?>>
                         <?php echo $arrayOfStrings["Cart"]; ?> 🛒 (<?= $cartCount ?>)
                     </a>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['username'])): ?>
                     <span style="margin-left: 10px;">
                         👤 <?php echo $arrayOfStrings["Welcome"] . " " . htmlspecialchars($_SESSION['username']); ?>
                     </span>

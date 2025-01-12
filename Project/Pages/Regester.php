@@ -25,7 +25,10 @@
         } else {
             $newpassword =  str_replace(";", "", $_POST["password"]); // this code is to replace the ; with nothing 
             // if the password match this code will run
-            $fileUser = fopen("client.csv", "a"); // this code is to open the file and write the information in it
+            $fileUser = fopen("../Database/client.csv", "a");
+            if (!$fileUser) {
+                die("Error: Unable to open the file for writing.");
+            } // this code is to open the file and write the information in it
             fputs($fileUser, "\n" . $_POST["username"] . ";" . $newpassword . ";customer"); // this code is to write the information in the file
             fclose($fileUser);
             header("Location: Login.php"); // this code is to redirect the user to the login page

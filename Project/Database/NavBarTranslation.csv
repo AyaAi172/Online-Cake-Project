@@ -12,3 +12,18 @@ Unknown,Unknown user,Utilisateur inconnu
 French,French,Français
 English,English,Anglais
 Cart,Cart,Panier
+Orders,Orders,Commandes
+All Orders,All Orders,Toutes les commandes
+Order,Order,Commande
+Order Date,Order Date,Date de commande
+Product Name,Product Name,Nom du produit
+Price,Price,Prix
+Total Price,Total Price,Prix total
+Order Time,Order time,Heure de commande
+Username,Username,Nom d'utilisateur
+Your Shopping Cart,Your Shopping Cart,Votre panier d'achat
+Your cart is empty,Your cart is empty!,Votre panier est vide!
+Your Order History,Your Order History,Votre historique de commandes
+Remove,Remove,Retirer
+Finalize Order,Finalize Order,Finaliser la commande
+Clear Cart,Clear Cart,Vider le panier

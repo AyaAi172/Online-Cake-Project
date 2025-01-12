@@ -42,12 +42,10 @@ body {
 .Icon {
     display: flex;
     align-items: center;
-
 }
 
 .Icon img {
     height: 40px;
-
 }
 
 .TopNav a:hover {
@@ -148,8 +146,6 @@ body {
     transform: scale(1.1);
 }
 
-
-
 /*login page*/
 
 /*register page*/
@@ -162,111 +158,113 @@ body {
 .form-container {
     display: flex;
     flex-direction: column;
-    /* Stack elements vertically */
     justify-content: center;
-    /* Center content vertically */
     align-items: center;
-    /* Center content horizontally */
     height: 300px;
-    /* Set a smaller height for the form container */
     width: 400px;
-    /* Set a smaller width for the form container */
     background-color: #a8e3e5;
-    /* Background color */
     border-radius: 15px;
-    /* Rounded corners */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* Optional shadow for depth */
     margin: 100px auto;
-    /* Center horizontally and add top space */
 }
 
 /* Language selector styling */
 .language-selector {
     display: flex;
     align-items: center;
-    /* Align with other navbar items */
     margin-left: 10px;
-    /* Add spacing between dropdown and other elements */
 }
 
 .language-selector select {
     background-color: #ffffff;
-    /* Background color */
     color: #333;
-    /* Text color */
     border: 1px solid #ccc;
-    /* Border color */
     border-radius: 20px;
-    /* Rounded corners */
     padding: 5px 10px;
-    /* Padding for better spacing */
     font-size: 14px;
-    /* Font size */
     cursor: pointer;
     transition: all 0.3s ease;
-    /* Smooth transitions for hover/focus */
     text-transform: uppercase;
-    /* Match navbar text style */
     font-weight: bold;
-    /* Bold text */
 }
 
-/* Hover effect */
 .language-selector select:hover {
     background-color: #ffe6f0;
-    /* Light pink background on hover */
     border-color: #e84d88;
-    /* Dark pink border on hover */
 }
 
-/* Focus effect */
 .language-selector select:focus {
     outline: none;
-    /* Remove focus outline */
     border-color: #e84d88;
-    /* Dark pink border on focus */
     box-shadow: 0 0 5px rgba(232, 77, 136, 0.5);
-    /* Glow effect */
 }
 
-/*Remove button*/
+/* Table styles */
 table {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     border-collapse: collapse;
     text-align: center;
     font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-thead tr {
-    background-color: #f1f1f1;
-    border-bottom: 2px solid #ddd;
+thead {
+    background-color: #a8e3e5;
+    color: #e84d88;
 }
 
 th, td {
-    padding: 10px;
-    border: 1px solid #ddd; /* Add border to each cell */
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-    transition: background-color 0.3s ease;
+    padding: 15px;
+    border: 1px solid #ddd;
+    font-size: 14px;
 }
 
 th {
     font-weight: bold;
-    color: #333;
+    text-transform: uppercase;
 }
 
-td {
-    border-right: 1px solid #ddd; /* Add vertical lines between columns */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-td:last-child, th:last-child {
-    border-right: none; /* Remove the right border for the last column */
+tbody tr:hover {
+    background-color: rgba(232, 77, 136, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+button {
+    background: linear-gradient(135deg, #a8e3e5, #6dc0c3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    border: 2px solid #6dc0c3;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #e84d88;
+    border-color: #c1366f;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Remove button specific styles */
+button.remove {
+    background: linear-gradient(135deg, #e84d88, #c1366f);
+    border: 2px solid #c1366f;
+}
+
+button.remove:hover {
+    background: red;
+    border-color: darkred;
+    transform: scale(1.05);
+    color: white;
 }

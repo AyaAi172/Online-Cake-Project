@@ -1,179 +1,172 @@
 <?php
 include_once("../Database/CommonCode.php");
+commoncodeNA("Cart");
 
-// Ensure the user is logged in
-if (!isset($_SESSION['username'])) {
-    header("Location: Login.php");
-    exit();
+// Initialize the cart if it doesn't exist
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
 }
 
-$username = $_SESSION['username']; // Logged-in username
-$cart = $_SESSION['cart'] ?? []; // Current cart
+// Path to the orders file
+$ordersFile = "../Database/FinalizedOrders.csv";
 
-// Handle "Remove Item" button
-if (isset($_POST['removeItem'])) {
-    $productIndex = $_POST['productIndex'];
-    if (isset($_SESSION['cart'][$productIndex])) {
-        unset($_SESSION['cart'][$productIndex]);
-        $_SESSION['cart'] = array_values($_SESSION['cart']); // Reindex array
-    }
-    header("Location: Cart.php");
-    exit();
-}
-
-// Handle "Clear Cart" button
-if (isset($_POST['clearCart'])) {
+// Clear cart functionality
+if (isset($_POST['clear_cart'])) {
     $_SESSION['cart'] = [];
     header("Location: Cart.php");
     exit();
 }
 
-// Handle "Finalize Order" button
-if (isset($_POST['finalizeOrder'])) {
-    if (count($cart) > 0) {
-        $totalPrice = 0;
-        $orderDetails = "";
+// Finalize order functionality
+if (isset($_POST['finalize_order']) && !empty($_SESSION['cart'])) {
+    $username = $_SESSION['username'];
+    $orderDate = date("Y-m-d");
+    $orderTime = date("H:i:s");
+    $productIDs = [];
+    $totalPrice = 0;
 
-        foreach ($cart as $product) {
-            $totalPrice += $product['price'];
-            $orderDetails .= $product['name'] . " - " . $product['price'] . " €; ";
-        }
-
-        // Save the order to Orders.csv
-        $timestamp = date("Y-m-d H:i:s");
-        $file = fopen("../Database/Orders.csv", "a");
-        fputcsv($file, [$username, $timestamp, $orderDetails, $totalPrice]);
-        fclose($file);
-
-        $_SESSION['cart'] = []; // Clear the cart
-        header("Location: Cart.php");
-        exit();
+    foreach ($_SESSION['cart'] as $item) {
+        $productIDs[] = $item['id'];
+        $totalPrice += $item['price'];
     }
+
+    $productIDsString = implode(",", $productIDs);
+
+    // Append the new order to the CSV file
+    $file = fopen($ordersFile, "a");
+    fputcsv($file, [$username, $orderDate, $orderTime, $productIDsString, $totalPrice]);
+    fclose($file);
+
+    // Clear the cart after finalizing the order
+    $_SESSION['cart'] = [];
+    header("Location: Cart.php");
+    exit();
 }
 
-// Load Order History
-$orders = [];
-$file = fopen("../Database/Orders.csv", "r");
-while (($line = fgetcsv($file)) !== false) {
-    if ($line[0] === $username) { // Filter by username
-        $orders[] = [
-            'timestamp' => $line[1],
-            'details' => $line[2],
-            'total' => $line[3]
+// Remove item functionality
+if (isset($_POST['remove_item'])) {
+    $index = $_POST['remove_item'];
+    if (isset($_SESSION['cart'][$index])) {
+        unset($_SESSION['cart'][$index]);
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
+    }
+    header("Location: Cart.php");
+    exit();
+}
+
+// Load user's order history
+$userOrders = [];
+if (file_exists($ordersFile)) {
+    $file = fopen($ordersFile, "r");
+    while (($line = fgetcsv($file)) !== false) {
+        if ($line[0] === $_SESSION['username']) {
+            $userOrders[] = [
+                'date' => $line[1],
+                'time' => $line[2],
+                'product_ids' => explode(",", $line[3]),
+                'total_price' => $line[4],
+            ];
+        }
+    }
+    fclose($file);
+}
+
+// Load product information for translations
+$productInfo = [];
+$productFile = "../Database/ProductsTranslation.csv";
+if (file_exists($productFile)) {
+    $file = fopen($productFile, "r");
+    fgetcsv($file, 1000, ";"); // Skip the header row
+    while (($line = fgetcsv($file, 1000, ";")) !== false) {
+        $productID = $line[0];
+        $productInfo[$productID] = [
+            'name' => ($_SESSION['language'] === "FR") ? $line[5] : $line[1],
+            'price' => $line[2],
         ];
     }
+    fclose($file);
 }
-fclose($file);
-
-commoncodeNA("Cart");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= $_SESSION['language'] === "FR" ? 'fr' : 'en' ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Design/Cake.css">
-    <title>Shopping Cart</title>
+    <title><?= htmlspecialchars($arrayOfStrings['Your Cart'] ?? 'Your Cart') ?></title>
 </head>
 
 <body>
-    <h1 style="text-align: center;"><?php echo $arrayOfStrings["Cart"] ?? "Your Cart"; ?></h1>
-
-    <!-- Current Cart -->
+    <h1 style="text-align: center;"><?= htmlspecialchars($arrayOfStrings['Your Shopping Cart'] ?? 'Your Shopping Cart') ?></h1>
     <div class="AllProducts">
-        <?php if (count($cart) > 0): ?>
-            <?php 
-            $totalPrice = 0;
-
-            foreach ($cart as $index => $product): 
-                $totalPrice += $product['price'];
-            ?>
+        <?php if (!empty($_SESSION['cart'])): ?>
+            <?php foreach ($_SESSION['cart'] as $index => $item): ?>
                 <div class="OneProduct">
-                    <div class="ProductName"><?= htmlspecialchars($product['name']) ?></div>
-                    <div class="ImageContainer">
-                        <img src="../Database/Images/<?= htmlspecialchars($product['image']) ?>" class="ProductImage" alt="<?= htmlspecialchars($product['name']) ?>">
-                    </div>
-                    <div class="Price"><?= htmlspecialchars($product['price']) ?> €</div>
+                <div class="ProductName"><?= htmlspecialchars($productInfo[$item['id']]['name'] ?? 'Unknown Product') ?></div>
 
-                    <!-- Remove Button -->
-                    <form method="POST" style="text-align: center;">
-                        <input type="hidden" name="productIndex" value="<?= $index ?>">
-                        <button type="submit" name="removeItem" class="REMOVE">Remove</button>
+                    <div class="ImageContainer">
+                        <img src="../Database/Images/<?= htmlspecialchars($item['image']) ?>" class="ProductImage" alt="<?= htmlspecialchars($item['name']) ?>">
+                    </div>
+                    <div class="Price"><?= htmlspecialchars($item['price']) ?> €</div>
+                    <form method="POST">
+                        <button type="submit" name="remove_item" value="<?= $index ?>" class="REMOVE">
+                            <?= htmlspecialchars($arrayOfStrings['Remove'] ?? 'Remove') ?>
+                        </button>
                     </form>
                 </div>
             <?php endforeach; ?>
-        </div>
-
-        <!-- Total Price -->
-        <h2 style="text-align: center;">Total: <?= $totalPrice ?> €</h2>
-
-        <!-- Finalize Order Button -->
-        <form method="POST" style="text-align: center;">
-            <button type="submit" name="finalizeOrder" class="ADD">Finalize Order</button>
-        </form>
-
-        <!-- Clear Cart Button -->
-        <form method="POST" style="text-align: center;">
-            <button type="submit" name="clearCart" class="REMOVE">Clear Cart</button>
-        </form>
+            <div style="text-align: center; margin-top: 20px;">
+                <p><?= htmlspecialchars($arrayOfStrings['Total'] ?? 'Total') ?>: <strong>
+                    <?= array_sum(array_column($_SESSION['cart'], 'price')) ?> €
+                </strong></p>
+                <form method="POST" style="display: inline;">
+                    <button type="submit" name="finalize_order" class="ADD">
+                        <?= htmlspecialchars($arrayOfStrings['Finalize Order'] ?? 'Finalize Order') ?>
+                    </button>
+                </form>
+                <form method="POST" style="display: inline;">
+                    <button type="submit" name="clear_cart" class="REMOVE">
+                        <?= htmlspecialchars($arrayOfStrings['Clear Cart'] ?? 'Clear Cart') ?>
+                    </button>
+                </form>
+            </div>
         <?php else: ?>
-            <p style="text-align: center; font-size: 20px;">Your cart is empty!</p>
+            <p style="text-align: center; font-size: 18px;">
+                <?= htmlspecialchars($arrayOfStrings['Your cart is empty'] ?? 'Your cart is empty!') ?>
+            </p>
         <?php endif; ?>
     </div>
 
-  <!-- Order History -->
-<h2 style="text-align: center;">Your Order History</h2>
-<div class="OrderHistory">
-    <?php if (count($orders) > 0): ?>
-        <table style="width: 80%; margin: 20px auto; border-collapse: collapse; text-align: center;">
-            <thead>
-                <tr style="background-color: #f1f1f1; border-bottom: 2px solid #ddd;">
-                    <th style="padding: 10px;">Order Date</th>
-                    <th style="padding: 10px;">Product Name</th>
-                    <th style="padding: 10px;">Price</th>
-                    <th style="padding: 10px;">Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($orders as $order): ?>
-                    <?php
-                    // Split order details into individual products
-                    $products = explode("; ", $order['details']);
-                    $rowCount = count(array_filter($products)); // Count valid products
-                    ?>
-                    <?php foreach ($products as $index => $product): ?>
-                        <?php if (!empty($product)): ?>
-                            <?php
-                            // Split product details into name and price
-                            $productDetails = explode(" - ", $product);
-                            $productName = $productDetails[0] ?? "";
-                            $productPrice = $productDetails[1] ?? "";
-                            ?>
-                            <tr style="border-bottom: 1px solid #ddd;">
-                                <!-- Order Date: Display only for the first product in the order -->
-                                <?php if ($index === 0): ?>
-                                    <td style="padding: 10px;" rowspan="<?= $rowCount ?>"><?= htmlspecialchars($order['timestamp']) ?></td>
-                                <?php endif; ?>
-                                <td style="padding: 10px;"><?= htmlspecialchars($productName) ?></td>
-                                <td style="padding: 10px;"><?= htmlspecialchars($productPrice) ?></td>
-                                <!-- Total Price: Display only for the first product in the order -->
-                                <?php if ($index === 0): ?>
-                                    <td style="padding: 10px;" rowspan="<?= $rowCount ?>"><?= htmlspecialchars($order['total']) ?> €</td>
-                                <?php endif; ?>
-                            </tr>
+    <h2 style="text-align: center;"><?= htmlspecialchars($arrayOfStrings['Your Order History'] ?? 'Your Order History') ?></h2>
+    <table>
+        <thead>
+            <tr>
+                <th><?= htmlspecialchars($arrayOfStrings['Order Date'] ?? 'Date') ?></th>
+                <th><?= htmlspecialchars($arrayOfStrings['Order Time'] ?? 'Time') ?></th>
+                <th><?= htmlspecialchars($arrayOfStrings['Product Name'] ?? 'Product Name') ?></th>
+                <th><?= htmlspecialchars($arrayOfStrings['Price'] ?? 'Price') ?></th>
+                <th><?= htmlspecialchars($arrayOfStrings['Total Price'] ?? 'Total Price') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($userOrders as $order): ?>
+                <tr>
+                    <td rowspan="<?= count($order['product_ids']) ?>"><?= htmlspecialchars($order['date']) ?></td>
+                    <td rowspan="<?= count($order['product_ids']) ?>"><?= htmlspecialchars($order['time']) ?></td>
+                    <?php foreach ($order['product_ids'] as $index => $productID): ?>
+                        <?php if ($index > 0): ?><tr><?php endif; ?>
+                        <td><?= htmlspecialchars($productInfo[$productID]['name'] ?? 'Unknown Product') ?></td>
+                        <td><?= htmlspecialchars($productInfo[$productID]['price'] ?? '0') ?> €</td>
+                        <?php if ($index === 0): ?>
+                            <td rowspan="<?= count($order['product_ids']) ?>"><?= htmlspecialchars($order['total_price']) ?> €</td>
                         <?php endif; ?>
+                        </tr>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p style="text-align: center; font-size: 20px;">You have no past orders.</p>
-    <?php endif; ?>
-</div>
-
-
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </body>
 
 </html>

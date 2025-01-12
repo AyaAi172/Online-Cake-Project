@@ -20,6 +20,9 @@ if (isset($_POST['addToCart'])) {
     exit();
 }
 
+// Set the Add to Cart button text based on the selected language
+$addToCartText = ($_SESSION['language'] == "EN") ? "Add to Cart 🛒" : "Ajouter au panier 🛒";
+
 commoncodeNA("Products"); // Navigation and common functionality
 ?>
 
@@ -62,7 +65,9 @@ commoncodeNA("Products"); // Navigation and common functionality
                             <input type="hidden" name="productName" value="<?= htmlspecialchars($productName) ?>">
                             <input type="hidden" name="productPrice" value="<?= htmlspecialchars($productPrice) ?>">
                             <input type="hidden" name="productImage" value="<?= htmlspecialchars($productImage) ?>">
-                            <button type="submit" name="addToCart" class="ADD">Add to Cart 🛒</button>
+                            <button type="submit" name="addToCart" class="add-to-cart">
+                                <?= htmlspecialchars($addToCartText) ?>
+                            </button>
                         </form>
                     <?php else: ?>
                         <p style="color: gray; font-size: 14px; text-align: center;">Login to add products to your cart.</p>
