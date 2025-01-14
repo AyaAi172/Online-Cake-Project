@@ -60,18 +60,18 @@
             $Grade = htmlspecialchars($arrayOfPieces[2]);
             $NomberOfStudent = $NomberOfStudent + 1;
 
+            if ($Grade < 20) {
+                $Grade = "<div class='lowGrade'>$Grade</div>";
+            } else if ($Grade > 40) {
+                $Grade = "<div class='highGrade'>$Grade</div>";
+            }
+            else {
+                $Grade = "<div>$Grade</div>";
+            }
+
 
     ?>
 
-            <tr>
-                <?php if ($Grade[2] < 20)
-                    echo "<td class='lowGrade'>";
-                else if ($Grade[2] > 40)
-                    echo "<td class='highGrade'>"; 
-                ?>
-
-
-            </tr>
             <table>
 
                 <div>
