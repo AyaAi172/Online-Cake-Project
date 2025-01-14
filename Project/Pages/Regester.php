@@ -54,7 +54,7 @@
                 <input type="password" name="confirmpassword" placeholder="confirm password">
             </div>
             <div class="regesterform">
-                <button type="submit"><?= htmlspecialchars($arrayOfStrings['Submit'] ?? 'Submit') ?>Submit</button>
+                <button type="submit"><?= htmlspecialchars($arrayOfStrings['Submit'] ?? 'Submit') ?></button>
             </div>
 
         </form>
