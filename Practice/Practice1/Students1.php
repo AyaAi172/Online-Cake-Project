@@ -41,64 +41,52 @@
 </head>
 
 <body>
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Grade</th>
+        </tr>
+        <?php
 
-    <?php
-
-    $file = fopen("Students.csv", "r");
-    $line = fgets($file);
-    $NomberOfStudent = 0;
-
-    while (!feof($file)) {
-
+        $file = fopen("Students.csv", "r");
         $line = fgets($file);
-        //print($line);
-        $arrayOfPieces = explode(",", $line);
+        $NomberOfStudent = 0;
 
-        if (count($arrayOfPieces) == 3) {
-            $NomberOfStudent = $NomberOfStudent + 1;
-    ?>
+        while (!feof($file)) {
 
-            <table>
+            $line = fgets($file);
+            //print($line);
+            $arrayOfPieces = explode(",", $line);
 
+            if (count($arrayOfPieces) == 3) {
+                $NomberOfStudent = $NomberOfStudent + 1;
+        ?>
                 <tr class="highGrade">
                     <td><?= $NomberOfStudent ?></td>
                     <td><?= $arrayOfPieces[0] ?></td>
                     <td><?= $arrayOfPieces[1] ?></td>
                     <td><a href="Students.php?minDisplayed=55"><?= $arrayOfPieces[2] ?></a></td>
                 </tr>
-
-            </table>
-
-    <?php
+        <?php
+            }
         }
-    }
-    fclose($file);
-    ?>
+        ?>
+        <tr>
+            <th></th>
+            <th>Class average:</th>
+            <th></th>
+            <th>35.9</th>
+        </tr>
+    </table>
     <a href="Students.php">Reset View</a>
     <h1>Add a new student:</h1>
-
-    <?php
-    if (!empty($_POST["fName"]) && !empty($_POST["lName"]) && !empty($_POST["Grade"])) {
-        $newStudent = fopen("Students.csv", "a");
-        if (!$newStudent) {
-            echo ("Error: Unable to open the file for writing.");
-        }
-        fputs($newStudent, "\n" . $_POST["fName"] . "," . $_POST["lName"] . "," . $_POST["Grade"]);
-        fclose($newStudent);
-        exit();
-    }
-
-    ?>
-
     <form method="POST">
-
-        <input type="text" name="fName" /></div>
-        <input type="text" name="lName" /></div>
-        <input type="text" name="Grade" /></div>
-        <input type="submit" value="Add" /></div>
+        <div>First name: <input name="fName" /></div>
+        <div>Last name: <input name="lName" /></div>
+        <div>Grade: <input name="Grade" /></div>
+        <div><input type="submit" value="Add" /></div>
     </form>
-
-
 </body>
 
 </html>
