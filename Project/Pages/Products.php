@@ -45,7 +45,7 @@ commoncodeNA("Products"); // Navigation and common functionality
         while (!feof($file)) {
             $line = fgets($file);
             $arrayOfPieces = explode(";", $line);
-
+                
             if (count($arrayOfPieces) == 7) {
                 $productID = htmlspecialchars($arrayOfPieces[0]);
                 $productName = ($_SESSION['language'] == "EN") ? htmlspecialchars($arrayOfPieces[1]) : htmlspecialchars($arrayOfPieces[5]);
