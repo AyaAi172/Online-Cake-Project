@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            tr,
+            td {
+                border: 2px solid black;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .lowCars {
+                background-color: pink;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table>
+            <tr>
+                <th>Car model</th>
+                <th>Price</th>
+                <th>Available</th>
+                <th>Orders</th>
+            </tr>
+            <tr class="lowCars">
+                <td>Dacia</td>
+                <td>10000</td>
+                <td>46</td>
+                <td>104</td>
+            </tr>
+            <tr class="lowCars">
+                <td>Volvo</td>
+                <td>50000</td>
+                <td>30</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>BMW</td>
+                <td>60000</td>
+                <td>40</td>
+                <td>20</td>
+            </tr>
+            <tr class="lowCars">
+                <td>Renault</td>
+                <td>20000</td>
+                <td>80</td>
+                <td>100</td>
+            </tr>
+            <tr class="lowCars">
+                <td>Tata Motors</td>
+                <td>5000</td>
+                <td>-5550</td>
+                <td>5555</td>
+            </tr>
+            <th>
+                <tr>
+                    <td>Total income:</td>
+                    <td></td>
+                    <td></td>
+                    <td>34015000</td>
+                </tr>
+            </th>
+        </table>
+    </body>
+
+    <h1>Order cars here</h1>
+    <form method="POST">
+        <div>Your name<input name="ClientName" /></div>
+        <div>
+            Please select the car type:
+            <select name="CarType">
+                <option>Dacia</option>
+                <option>Volvo</option>
+                <option>BMW</option>
+                <option>Renault</option>
+                <option>Tata Motors</option>
+            </select>
+        </div>
+        <div>How many do you want:<input name="HowMany" /></div>
+        <div><input type="submit" value="Order" /></div>
+    </form>
+</html>
