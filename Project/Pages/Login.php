@@ -50,9 +50,7 @@
             <div class="regesterform">
                 <input type="password" name="password" placeholder="Enter your password" required>
             </div>
-            <div class="regesterform">
-                <button type="submit"></button>
-            </div>
+           
             <div class="regesterform">
                 <input type="submit"><?= htmlspecialchars($arrayOfStrings['Login'] ?? 'Login') ?></input>
                 
